@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>For You ❤️</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(#ffe6f0, #fff);
+            margin-top: 120px;
+        }
+
+        h1 {
+            color: #ff4d6d;
+            font-size: 40px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            background: #ff4d6d;
+            color: white;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 40px;
+            font-size: 22px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>For You ❤️</h1>
+
+    <button onclick="changeMessage()">Click me ❤️</button>
+
+    <div id="message">Hi ❤️</div>
+
+    <!-- 🎵 Music (iPhone plays only after click) -->
+    <audio id="music" loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        let messages = [
+            "Hey... I made this for you ❤️",
+            "No pressure, I just want you to smile",
+            "I really care about you",
+            "Take your time, I'm here",
+            "You matter to me ❤️",
+            "Thank you for being you"
+        ];
+
+        let i = 0;
+
+        function changeMessage() {
+            document.getElementById("message").innerText = messages[i];
+            i = (i + 1) % messages.length;
+
+            // 🎵 play music (works after user click on iPhone)
+            document.getElementById("music").play();
+        }
+    </script>
+
+</body>
+</html>
