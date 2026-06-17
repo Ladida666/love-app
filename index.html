@@ -13,19 +13,19 @@ body {
   text-align: center;
 }
 
-/* 🎥 VIDEO BACKGROUND */
+/* 🎥 FULLSCREEN VIDEO (RESIZED PROPERLY) */
 #bgvideo {
   position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover; /* key for perfect fit */
   z-index: -1;
-  filter: brightness(50%);
+  filter: brightness(50%); /* makes text readable */
 }
 
-/* CONTENT BOX */
+/* CONTENT */
 .content {
   position: relative;
   z-index: 1;
@@ -44,22 +44,9 @@ button {
   margin-top: 15px;
 }
 
-/* TYPE TEXT */
+/* TEXT AREA */
 h2 {
   min-height: 40px;
-}
-
-/* FLOATING HEARTS */
-.heart {
-  position: absolute;
-  color: pink;
-  font-size: 20px;
-  animation: floatUp 5s linear infinite;
-}
-
-@keyframes floatUp {
-  0% { transform: translateY(100vh); opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
 }
 </style>
 </head>
@@ -84,7 +71,7 @@ h2 {
 
 <script>
 
-// ✍️ TYPEWRITER TEXT
+// ✍️ TYPEWRITER EFFECT
 const message = "You are my favorite person in the world 💖";
 let i = 0;
 
@@ -96,23 +83,6 @@ function typeWriter() {
   }
 }
 typeWriter();
-
-// 💖 FLOATING HEARTS
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.innerHTML = "💖";
-  heart.classList.add("heart");
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (Math.random() * 20 + 10) + "px";
-
-  document.body.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 5000);
-}
-
-setInterval(createHeart, 250);
 
 </script>
 
