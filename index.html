@@ -9,20 +9,19 @@ body {
   margin: 0;
   overflow: hidden;
   font-family: Arial;
-  color: white;
   text-align: center;
+  color: white;
   background: black;
 }
 
-/* 🎥 FULL BACKGROUND VIDEO */
-#bgvideo {
+/* 🎞️ GIF BACKGROUND */
+#bggif {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 100vh;
   width: auto;
-  object-fit: contain;
   z-index: -1;
   filter: brightness(50%);
 }
@@ -33,26 +32,45 @@ body {
   z-index: 1;
   margin-top: 18vh;
 }
+
+/* TEXT */
+h2 {
+  min-height: 40px;
+}
+
+/* HEARTS */
+.heart {
+  position: absolute;
+  color: pink;
+  font-size: 20px;
+  animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh); opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
 </style>
 </head>
 
 <body>
 
-<!-- 🎥 VIDEO (AUTO PLAY ATTEMPT) -->
-<video id="bgvideo" autoplay muted loop playsinline>
-  <source src="background.mp4" type="video/mp4">
-</video>
+<!-- 🎞️ GIF BACKGROUND -->
+<img src="background.gif" id="bggif">
 
 <div class="content">
   <h1>💖 For You 💖</h1>
   <h2 id="text"></h2>
 
-  <audio id="bgmusic" src="music.mp3" loop autoplay></audio>
+  <p>Tap anywhere to play music 🎵</p>
 </div>
+
+<!-- 🎵 MUSIC -->
+<audio id="bgmusic" src="music.mp3" loop></audio>
 
 <script>
 
-// TYPEWRITER
+// ✍️ TYPEWRITER
 const message = "You are my favorite person in the world 💖";
 let i = 0;
 
@@ -64,6 +82,32 @@ function typeWriter() {
   }
 }
 typeWriter();
+
+// 🎵 MUSIC START ON FIRST CLICK (FIX FOR MOBILE)
+function startMusic() {
+  const music = document.getElementById("bgmusic");
+  music.play();
+  document.removeEventListener("click", startMusic);
+}
+
+document.addEventListener("click", startMusic);
+
+// 💖 FLOATING HEARTS
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.innerHTML = "💖";
+  heart.classList.add("heart");
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 5000);
+}
+
+setInterval(createHeart, 250);
 
 </script>
 
