@@ -1,23 +1,19 @@
 <script>
 
-window.onload = function () {
+// BUTTON CLICK (simple + working)
+const openBtn = document.getElementById("openBtn");
+const intro = document.getElementById("intro");
+const card = document.getElementById("card");
+const music = document.getElementById("bgmusic");
 
-  // BUTTON FIX (guaranteed to work)
-  document.getElementById("openBtn").addEventListener("click", function () {
+openBtn.onclick = function () {
+  intro.style.display = "none";
+  card.classList.add("show");
 
-    document.getElementById("intro").style.display = "none";
-
-    const card = document.getElementById("card");
-    card.classList.add("show");
-
-    // play music (mobile-safe)
-    const music = document.getElementById("bgmusic");
-    music.play().catch(() => {});
-  });
-
+  music.play().catch(() => {});
 };
 
-// SLIDES
+// SLIDES DATA
 const slides = [
   { img: "us1.jpg", text: "This is where everything felt real to me. I didn’t just smile — I felt safe.", title: "💞 Moments I Treasure" },
   { img: "us2.jpg", text: "I go back to this memory a lot. It reminds me how lucky I am.", title: "💞 Moments I Treasure" },
@@ -30,8 +26,12 @@ const slides = [
 
 let index = 0;
 
-// DOTS
+const slideImg = document.getElementById("slide");
+const caption = document.getElementById("caption");
+const title = document.getElementById("title");
 const dotsContainer = document.getElementById("dots");
+
+// CREATE DOTS
 slides.forEach((_, i) => {
   const d = document.createElement("span");
   d.classList.add("dot");
@@ -41,13 +41,13 @@ slides.forEach((_, i) => {
 
 const dots = document.querySelectorAll(".dot");
 
-// UPDATE
+// UPDATE SLIDE
 function updateSlide() {
   const slide = slides[index];
 
-  document.getElementById("slide").src = slide.img;
-  document.getElementById("caption").innerText = slide.text;
-  document.getElementById("title").innerText = slide.title;
+  slideImg.src = slide.img;
+  caption.innerText = slide.text;
+  title.innerText = slide.title;
 
   dots.forEach(d => d.classList.remove("active"));
   dots[index].classList.add("active");
@@ -58,7 +58,7 @@ function updateSlide() {
 // INITIAL
 updateSlide();
 
-// 7 SECONDS
+// 7 SECONDS (INCLUDING FIRST)
 setTimeout(() => {
   setInterval(updateSlide, 7000);
 }, 7000);
