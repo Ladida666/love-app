@@ -7,26 +7,23 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial;
   overflow: hidden;
+  font-family: Arial;
   color: white;
   text-align: center;
-  background: linear-gradient(135deg, pink, #ff4d6d);
+  background: black;
 }
 
-/* 🎥 CENTERED PHOTOSTRIP VIDEO */
+/* 🎥 FULL BACKGROUND VIDEO */
 #bgvideo {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  height: 100vh;   /* fits full vertical strip */
-  width: auto;     /* keeps aspect ratio */
-
-  object-fit: contain; /* show full video */
+  height: 100vh;
+  width: auto;
+  object-fit: contain;
   z-index: -1;
-
   filter: brightness(50%);
 }
 
@@ -36,30 +33,13 @@ body {
   z-index: 1;
   margin-top: 18vh;
 }
-
-/* BUTTON */
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 25px;
-  font-size: 16px;
-  cursor: pointer;
-  background: white;
-  color: #ff4d6d;
-  margin-top: 15px;
-}
-
-/* TEXT */
-h2 {
-  min-height: 40px;
-}
 </style>
 </head>
 
 <body>
 
-<!-- 🎥 VIDEO BACKGROUND -->
-<video autoplay muted loop id="bgvideo">
+<!-- 🎥 VIDEO (AUTO PLAY ATTEMPT) -->
+<video id="bgvideo" autoplay muted loop playsinline>
   <source src="background.mp4" type="video/mp4">
 </video>
 
@@ -67,16 +47,12 @@ h2 {
   <h1>💖 For You 💖</h1>
   <h2 id="text"></h2>
 
-  <button onclick="document.getElementById('bgmusic').play()">
-    Play Music 🎵
-  </button>
-
-  <audio id="bgmusic" src="music.mp3" loop></audio>
+  <audio id="bgmusic" src="music.mp3" loop autoplay></audio>
 </div>
 
 <script>
 
-// ✍️ TYPEWRITER EFFECT
+// TYPEWRITER
 const message = "You are my favorite person in the world 💖";
 let i = 0;
 
