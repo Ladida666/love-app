@@ -7,14 +7,14 @@
 <style>
 body {
   margin: 0;
-  overflow: hidden;
   font-family: Arial;
-  text-align: center;
   color: white;
+  text-align: center;
+  overflow: hidden;
   background: black;
 }
 
-/* 🎞️ GIF BACKGROUND */
+/* BACKGROUND */
 #bggif {
   position: fixed;
   top: 50%;
@@ -23,91 +23,169 @@ body {
   height: 100vh;
   width: auto;
   z-index: -1;
-  filter: brightness(50%);
+  filter: brightness(45%);
 }
 
-/* CONTENT */
-.content {
+/* CARD */
+.card {
   position: relative;
-  z-index: 1;
-  margin-top: 18vh;
+  z-index: 2;
+  margin-top: 8vh;
+  display: inline-block;
+  padding: 20px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  width: 85%;
+  max-width: 400px;
+}
+
+/* IMAGE */
+img {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
 /* TEXT */
-h2 {
-  min-height: 40px;
-}
-
-/* HEARTS */
-.heart {
-  position: absolute;
-  color: pink;
+#title {
   font-size: 20px;
-  animation: floatUp 5s linear infinite;
+  margin-bottom: 10px;
 }
 
-@keyframes floatUp {
-  0% { transform: translateY(100vh); opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
+#caption {
+  margin-top: 10px;
+  font-size: 15px;
+  min-height: 50px;
+}
+
+/* BUTTON */
+button {
+  margin-top: 10px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 20px;
+  background: white;
+  color: #ff4d6d;
+  cursor: pointer;
+}
+
+/* DOTS */
+.dots {
+  margin-top: 10px;
+}
+.dot {
+  height: 10px;
+  width: 10px;
+  margin: 3px;
+  display: inline-block;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+}
+.active {
+  background: white;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎞️ GIF BACKGROUND -->
 <img src="background.gif" id="bggif">
 
-<div class="content">
-  <h1>💖 For You 💖</h1>
-  <h2 id="text"></h2>
+<div class="card">
 
-  <p>Tap anywhere to play music 🎵</p>
+  <div id="title">💞 Moments I Will Always Treasure</div>
+
+  <img id="slide" src="us1.jpg">
+
+  <div id="caption"></div>
+
+  <audio id="bgmusic" src="music.mp3" loop></audio>
+
+  <button onclick="startMusic()">Play Music 🎵</button>
+
+  <div class="dots" id="dots"></div>
+
 </div>
-
-<!-- 🎵 MUSIC -->
-<audio id="bgmusic" src="music.mp3" loop></audio>
 
 <script>
 
-// ✍️ TYPEWRITER
-const message = "You are my favorite person in the world 💖";
-let i = 0;
+// 💖 ALL DATA
+const slides = [
 
-function typeWriter() {
-  if (i < message.length) {
-    document.getElementById("text").innerHTML += message.charAt(i);
-    i++;
-    setTimeout(typeWriter, 60);
+  // US SECTION
+  {
+    img: "us1.jpg",
+    text: "This is where everything felt real to me. I didn’t just smile in this moment — I felt safe.",
+    title: "💞 Moments I Will Always Treasure"
+  },
+  {
+    img: "us2.jpg",
+    text: "I go back to this memory a lot. It reminds me how lucky I am to have shared something this real with you.",
+    title: "💞 Moments I Will Always Treasure"
+  },
+  {
+    img: "us3.jpg",
+    text: "Out of all the places I’ve been, this moment with you is still one of my favorites. I’ll always treasure it.",
+    title: "💞 Moments I Will Always Treasure"
+  },
+
+  // HER SECTION
+  {
+    img: "her1.jpg",
+    text: "You look really beautiful here. I can see the effort you put in, and it honestly makes you stand out even more.",
+    title: "🌷 You, In Every Way I See You"
+  },
+  {
+    img: "her2.jpg",
+    text: "There’s something about you when you dress up like this — it’s not just how you look, it’s the confidence you carry too.",
+    title: "🌷 You, In Every Way I See You"
+  },
+  {
+    img: "her3.jpg",
+    text: "But what I admire the most is that even without all of that, you’re still just as beautiful to me.",
+    title: "🌷 You, In Every Way I See You"
   }
-}
-typeWriter();
 
-// 🎵 MUSIC START ON FIRST CLICK (FIX FOR MOBILE)
+];
+
+let index = 0;
+
+// CREATE DOTS
+const dotsContainer = document.getElementById("dots");
+slides.forEach((_, i) => {
+  const d = document.createElement("span");
+  d.classList.add("dot");
+  if (i === 0) d.classList.add("active");
+  dotsContainer.appendChild(d);
+});
+
+const dots = document.querySelectorAll(".dot");
+
+// UPDATE SLIDE
+function updateSlide() {
+  const slide = slides[index];
+
+  document.getElementById("slide").src = slide.img;
+  document.getElementById("caption").innerText = slide.text;
+  document.getElementById("title").innerText = slide.title;
+
+  dots.forEach(d => d.classList.remove("active"));
+  dots[index].classList.add("active");
+
+  index = (index + 1) % slides.length;
+}
+
+// AUTO PLAY
+setInterval(updateSlide, 3000);
+
+// INITIAL LOAD
+updateSlide();
+
+// MUSIC
 function startMusic() {
-  const music = document.getElementById("bgmusic");
-  music.play();
-  document.removeEventListener("click", startMusic);
+  document.getElementById("bgmusic").play();
 }
-
-document.addEventListener("click", startMusic);
-
-// 💖 FLOATING HEARTS
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.innerHTML = "💖";
-  heart.classList.add("heart");
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (Math.random() * 20 + 10) + "px";
-
-  document.body.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 5000);
-}
-
-setInterval(createHeart, 250);
 
 </script>
 
