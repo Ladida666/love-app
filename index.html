@@ -2,65 +2,68 @@
 
 window.onload = function () {
 
-  // BUTTON FIX (guaranteed to work)
+  // BUTTON CLICK
   document.getElementById("openBtn").addEventListener("click", function () {
-
     document.getElementById("intro").style.display = "none";
 
     const card = document.getElementById("card");
     card.classList.add("show");
 
-    // play music (mobile-safe)
+    // play music
     const music = document.getElementById("bgmusic");
     music.play().catch(() => {});
   });
 
+  // SLIDES
+  const slides = [
+    { img: "us1.jpg", text: "This is where everything felt real to me. I didn’t just smile — I felt safe.", title: "💞 Moments I Treasure" },
+    { img: "us2.jpg", text: "I go back to this memory a lot. It reminds me how lucky I am.", title: "💞 Moments I Treasure" },
+    { img: "us3.jpg", text: "This moment is still one of my favorites. I’ll always treasure it.", title: "💞 Moments I Treasure" },
+
+    { img: "her1.jpg", text: "You look really beautiful here. I can see the effort you put in.", title: "🌷 You, As I See You" },
+    { img: "her2.jpg", text: "It’s not just how you look — it’s the confidence you carry.", title: "🌷 You, As I See You" },
+    { img: "her3.jpg", text: "Even without all that, you’re still just as beautiful to me.", title: "🌷 You, As I See You" }
+  ];
+
+  let index = 0;
+
+  const slideImg = document.getElementById("slide");
+  const caption = document.getElementById("caption");
+  const title = document.getElementById("title");
+  const dotsContainer = document.getElementById("dots");
+
+  // CREATE DOTS
+  slides.forEach((_, i) => {
+    const d = document.createElement("span");
+    d.classList.add("dot");
+    if (i === 0) d.classList.add("active");
+    dotsContainer.appendChild(d);
+  });
+
+  const dots = document.querySelectorAll(".dot");
+
+  // UPDATE SLIDE
+  function updateSlide() {
+    const slide = slides[index];
+
+    slideImg.src = slide.img;
+    caption.innerText = slide.text;
+    title.innerText = slide.title;
+
+    dots.forEach(d => d.classList.remove("active"));
+    dots[index].classList.add("active");
+
+    index = (index + 1) % slides.length;
+  }
+
+  // INITIAL LOAD
+  updateSlide();
+
+  // 7 SECONDS
+  setTimeout(() => {
+    setInterval(updateSlide, 7000);
+  }, 7000);
+
 };
-
-// SLIDES
-const slides = [
-  { img: "us1.jpg", text: "This is where everything felt real to me. I didn’t just smile — I felt safe.", title: "💞 Moments I Treasure" },
-  { img: "us2.jpg", text: "I go back to this memory a lot. It reminds me how lucky I am.", title: "💞 Moments I Treasure" },
-  { img: "us3.jpg", text: "This moment is still one of my favorites. I’ll always treasure it.", title: "💞 Moments I Treasure" },
-
-  { img: "her1.jpg", text: "You look really beautiful here. I can see the effort you put in.", title: "🌷 You, As I See You" },
-  { img: "her2.jpg", text: "It’s not just how you look — it’s the confidence you carry.", title: "🌷 You, As I See You" },
-  { img: "her3.jpg", text: "Even without all that, you’re still just as beautiful to me.", title: "🌷 You, As I See You" }
-];
-
-let index = 0;
-
-// DOTS
-const dotsContainer = document.getElementById("dots");
-slides.forEach((_, i) => {
-  const d = document.createElement("span");
-  d.classList.add("dot");
-  if (i === 0) d.classList.add("active");
-  dotsContainer.appendChild(d);
-});
-
-const dots = document.querySelectorAll(".dot");
-
-// UPDATE
-function updateSlide() {
-  const slide = slides[index];
-
-  document.getElementById("slide").src = slide.img;
-  document.getElementById("caption").innerText = slide.text;
-  document.getElementById("title").innerText = slide.title;
-
-  dots.forEach(d => d.classList.remove("active"));
-  dots[index].classList.add("active");
-
-  index = (index + 1) % slides.length;
-}
-
-// INITIAL
-updateSlide();
-
-// 7 SECONDS
-setTimeout(() => {
-  setInterval(updateSlide, 7000);
-}, 7000);
 
 </script>
