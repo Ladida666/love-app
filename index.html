@@ -1,29 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Love App 💖</title>
+<meta charset="UTF-8">
+<title>For You 💖</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, pink, #ff4d6d);
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* CARD */
+.card {
+  margin-top: 40px;
+  padding: 20px;
+}
+
+/* IMAGES */
+img {
+  width: 220px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  margin: 10px;
+}
+
+/* BUTTON */
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  background: white;
+  color: #ff4d6d;
+  margin-top: 15px;
+}
+
+/* HEARTS */
+.heart {
+  position: absolute;
+  color: white;
+  font-size: 20px;
+  animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh); opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* SLIDESHOW */
+.slideshow img {
+  display: none;
+}
+.slideshow img.active {
+  display: inline-block;
+}
+</style>
 </head>
 
-<body style="text-align:center; font-family: Arial; background-color: pink;">
+<body>
 
-  <h1>💖 My Love Page 💖</h1>
-  <p>Click the button to start music</p>
+<div class="card">
+  <h1>💖 For You 💖</h1>
+
+  <!-- TYPEWRITER TEXT -->
+  <h2 id="text"></h2>
+
+  <!-- SLIDESHOW -->
+  <div class="slideshow">
+    <img src="image1.jpg" class="active">
+    <img src="image2.jpg">
+    <img src="image3.jpg">
+  </div>
 
   <!-- MUSIC -->
   <audio id="bgmusic" src="music.mp3" loop></audio>
+  <br>
 
-  <!-- BUTTON -->
-  <button onclick="playMusic()" style="padding:10px 20px; font-size:18px;">
+  <button onclick="document.getElementById('bgmusic').play()">
     Play Music 🎵
   </button>
+</div>
 
-  <script>
-    function playMusic() {
-      const music = document.getElementById("bgmusic");
-      music.play();
-    }
-  </script>
+<script>
+// TYPEWRITER EFFECT
+const message = "You are my favorite person in the world 💖";
+let i = 0;
+function type() {
+  if (i < message.length) {
+    document.getElementById("text").innerHTML += message.charAt(i);
+    i++;
+    setTimeout(type, 70);
+  }
+}
+type();
+
+// SLIDESHOW
+let index = 0;
+const images = document.querySelectorAll(".slideshow img");
+setInterval(() => {
+  images[index].classList.remove("active");
+  index = (index + 1) % images.length;
+  images[index].classList.add("active");
+}, 2000);
+
+// FLOATING HEARTS
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.innerHTML = "💖";
+  heart.classList.add("heart");
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = Math.random() * 20 + 10 + "px";
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 5000);
+}
+setInterval(createHeart, 300);
+</script>
 
 </body>
 </html>
