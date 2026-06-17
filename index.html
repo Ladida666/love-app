@@ -1,37 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💖</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  background: black;
+}
+
+#bggif {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100vh;
+  width: auto;
+  z-index: 0;
+  filter: brightness(45%);
+  pointer-events: none;
+}
+
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 3;
+  pointer-events: none;
+}
+
+#intro h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+  pointer-events: none;
+}
+
+#intro p {
+  font-size: 18px;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 25px;
+  background: white;
+  color: #ff4d6d;
+  cursor: pointer;
+  font-size: 16px;
+  pointer-events: all;
+  position: relative;
+  z-index: 10;
+}
+
+button:hover {
+  background: #ffe0e6;
+}
+
+.card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  transition: 0.5s ease;
+  pointer-events: none;
+  z-index: 4;
+  padding: 20px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  width: 80%;
+  max-width: 380px;
+}
+
+.card.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: all;
+}
+
+#slide {
+  width: 75%;
+  display: block;
+  margin: 0 auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+#title {
+  margin-bottom: 10px;
+}
+
+#caption {
+  margin-top: 10px;
+  font-size: 15px;
+  min-height: 50px;
+}
+
+.dots {
+  margin-top: 10px;
+}
+.dot {
+  height: 10px;
+  width: 10px;
+  margin: 3px;
+  display: inline-block;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+}
+.dot.active {
+  background: white;
+}
+</style>
+</head>
+
+<body>
+
+<img src="background.gif" id="bggif" alt="">
+<audio id="bgmusic" src="music.mp3" loop></audio>
+
+<div id="intro">
+  <h1>Hi 💖</h1>
+  <p>I made something for you…</p>
+  <button id="startBtn">Click for memories</button>
+</div>
+
+<div class="card" id="card">
+  <div id="title"></div>
+  <img id="slide" src="us1.jpg" alt="">
+  <div id="caption"></div>
+  <div class="dots" id="dots"></div>
+</div>
+
 <script>
 
-// BUTTON CLICK (simple + working)
-const openBtn = document.getElementById("openBtn");
-const intro = document.getElementById("intro");
-const card = document.getElementById("card");
-const music = document.getElementById("bgmusic");
-
-openBtn.onclick = function () {
-  intro.style.display = "none";
-  card.classList.add("show");
-
-  music.play().catch(() => {});
-};
-
-// SLIDES DATA
 const slides = [
-  { img: "us1.jpg", text: "This is where everything felt real to me. I didn’t just smile — I felt safe.", title: "💞 Moments I Treasure" },
-  { img: "us2.jpg", text: "I go back to this memory a lot. It reminds me how lucky I am.", title: "💞 Moments I Treasure" },
-  { img: "us3.jpg", text: "This moment is still one of my favorites. I’ll always treasure it.", title: "💞 Moments I Treasure" },
-
-  { img: "her1.jpg", text: "You look really beautiful here. I can see the effort you put in.", title: "🌷 You, As I See You" },
-  { img: "her2.jpg", text: "It’s not just how you look — it’s the confidence you carry.", title: "🌷 You, As I See You" },
-  { img: "her3.jpg", text: "Even without all that, you’re still just as beautiful to me.", title: "🌷 You, As I See You" }
+  { img: "us1.jpg",  text: "This is where everything felt real to me. I didn't just smile — I felt safe.",  title: "💞 Moments I Treasure" },
+  { img: "us2.jpg",  text: "I go back to this memory a lot. It reminds me how lucky I am.",                  title: "💞 Moments I Treasure" },
+  { img: "us3.jpg",  text: "This moment is still one of my favorites. I'll always treasure it.",             title: "💞 Moments I Treasure" },
+  { img: "her1.jpg", text: "You look really beautiful here. I can see the effort you put in.",               title: "🌷 You, As I See You" },
+  { img: "her2.jpg", text: "It's not just how you look — it's the confidence you carry.",                    title: "🌷 You, As I See You" },
+  { img: "her3.jpg", text: "Even without all that, you're still just as beautiful to me.",                   title: "🌷 You, As I See You" }
 ];
 
 let index = 0;
+let intervalId = null;
 
-const slideImg = document.getElementById("slide");
-const caption = document.getElementById("caption");
-const title = document.getElementById("title");
 const dotsContainer = document.getElementById("dots");
-
-// CREATE DOTS
 slides.forEach((_, i) => {
   const d = document.createElement("span");
   d.classList.add("dot");
@@ -41,26 +168,31 @@ slides.forEach((_, i) => {
 
 const dots = document.querySelectorAll(".dot");
 
-// UPDATE SLIDE
 function updateSlide() {
-  const slide = slides[index];
-
-  slideImg.src = slide.img;
-  caption.innerText = slide.text;
-  title.innerText = slide.title;
-
+  const s = slides[index];
+  document.getElementById("slide").src = s.img;
+  document.getElementById("caption").innerText = s.text;
+  document.getElementById("title").innerText = s.title;
   dots.forEach(d => d.classList.remove("active"));
   dots[index].classList.add("active");
-
   index = (index + 1) % slides.length;
 }
 
-// INITIAL
 updateSlide();
 
-// 7 SECONDS (INCLUDING FIRST)
-setTimeout(() => {
-  setInterval(updateSlide, 7000);
-}, 7000);
+document.getElementById("startBtn").addEventListener("click", function () {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("card").classList.add("show");
+
+  const music = document.getElementById("bgmusic");
+  music.play().catch(() => {});
+
+  if (!intervalId) {
+    intervalId = setInterval(updateSlide, 7000);
+  }
+});
 
 </script>
+
+</body>
+</html>
