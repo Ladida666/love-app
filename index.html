@@ -14,7 +14,7 @@ body {
   background: black;
 }
 
-/* 🎞️ BACKGROUND */
+/* BACKGROUND */
 #bggif {
   position: fixed;
   top: 50%;
@@ -26,7 +26,7 @@ body {
   filter: brightness(45%);
 }
 
-/* 💬 INTRO TEXT */
+/* INTRO */
 #intro {
   position: fixed;
   width: 100%;
@@ -36,16 +36,6 @@ body {
   align-items: center;
   flex-direction: column;
   z-index: 3;
-}
-
-#intro h1 {
-  font-size: 40px;
-  margin-bottom: 10px;
-}
-
-#intro p {
-  font-size: 18px;
-  opacity: 0.8;
 }
 
 /* BUTTON */
@@ -60,7 +50,7 @@ button {
   font-size: 16px;
 }
 
-/* 💎 SLIDESHOW CARD */
+/* CARD */
 .card {
   position: fixed;
   top: 50%;
@@ -68,8 +58,8 @@ button {
   transform: translate(-50%, -50%) scale(0.8);
   opacity: 0;
   transition: 0.5s ease;
-
   z-index: 4;
+
   padding: 20px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
@@ -84,7 +74,7 @@ button {
   opacity: 1;
 }
 
-/* IMAGE CENTERED */
+/* IMAGE */
 img {
   width: 75%;
   display: block;
@@ -127,14 +117,14 @@ img {
 <!-- BACKGROUND -->
 <img src="background.gif" id="bggif">
 
-<!-- MUSIC (AUTO ATTEMPT) -->
-<audio id="bgmusic" src="music.mp3" loop autoplay></audio>
+<!-- MUSIC -->
+<audio id="bgmusic" src="music.mp3" loop></audio>
 
 <!-- INTRO -->
 <div id="intro">
   <h1>Hi 💖</h1>
   <p>I made something for you…</p>
-  <button onclick="openMemories()">Click for memories</button>
+  <button id="openBtn">Click for memories</button>
 </div>
 
 <!-- SLIDESHOW -->
@@ -147,15 +137,17 @@ img {
 
 <script>
 
-// OPEN MEMORIES
-function openMemories() {
+// BUTTON FIX (reliable click)
+document.getElementById("openBtn").addEventListener("click", function () {
   document.getElementById("intro").style.display = "none";
+
   const card = document.getElementById("card");
   card.classList.add("show");
 
-  // try to play music again (fix mobile)
-  document.getElementById("bgmusic").play();
-}
+  // play music (mobile-safe)
+  const music = document.getElementById("bgmusic");
+  music.play().catch(() => {});
+});
 
 // SLIDES
 const slides = [
@@ -198,7 +190,7 @@ function updateSlide() {
 // INITIAL
 updateSlide();
 
-// 7 SECONDS
+// 7 SECOND TIMING (INCLUDING FIRST)
 setTimeout(() => {
   setInterval(updateSlide, 7000);
 }, 7000);
