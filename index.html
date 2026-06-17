@@ -26,12 +26,25 @@ body {
   filter: brightness(45%);
 }
 
+/* INTRO */
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 5;
+}
+
 /* CARD */
 .card {
   position: relative;
   z-index: 2;
   margin-top: 8vh;
-  display: inline-block;
+  display: none;
   padding: 20px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
@@ -42,7 +55,7 @@ body {
 
 /* IMAGE */
 img {
-  width: 100%;
+  width: 75%;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
@@ -92,61 +105,41 @@ button {
 
 <img src="background.gif" id="bggif">
 
-<div class="card">
-
-  <div id="title">💞 Moments I Will Always Treasure</div>
-
-  <img id="slide" src="us1.jpg">
-
-  <div id="caption"></div>
-
-  <audio id="bgmusic" src="music.mp3" loop></audio>
-
-  <button onclick="startMusic()">Play Music 🎵</button>
-
-  <div class="dots" id="dots"></div>
-
+<!-- INTRO -->
+<div id="intro">
+  <h1>💖 For You 💖</h1>
+  <button onclick="enter()">Open Memories</button>
 </div>
+
+<!-- MAIN -->
+<div class="card" id="main">
+  <div id="title"></div>
+  <img id="slide" src="us1.jpg">
+  <div id="caption"></div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- MUSIC -->
+<audio id="bgmusic" src="music.mp3" loop></audio>
 
 <script>
 
-// 💖 ALL DATA
+// ENTER + START MUSIC
+function enter() {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("main").style.display = "block";
+  document.getElementById("bgmusic").play();
+}
+
+// SLIDES DATA
 const slides = [
+  { img: "us1.jpg", text: "This is where everything felt real to me. I didn’t just smile — I felt safe.", title: "💞 Moments I Treasure" },
+  { img: "us2.jpg", text: "I go back to this memory a lot. It reminds me how lucky I am.", title: "💞 Moments I Treasure" },
+  { img: "us3.jpg", text: "This moment is still one of my favorites. I’ll always treasure it.", title: "💞 Moments I Treasure" },
 
-  // US SECTION
-  {
-    img: "us1.jpg",
-    text: "This is where everything felt real to me. I didn’t just smile in this moment — I felt safe.",
-    title: "💞 Moments I Will Always Treasure"
-  },
-  {
-    img: "us2.jpg",
-    text: "I go back to this memory a lot. It reminds me how lucky I am to have shared something this real with you.",
-    title: "💞 Moments I Will Always Treasure"
-  },
-  {
-    img: "us3.jpg",
-    text: "Out of all the places I’ve been, this moment with you is still one of my favorites. I’ll always treasure it.",
-    title: "💞 Moments I Will Always Treasure"
-  },
-
-  // HER SECTION
-  {
-    img: "her1.jpg",
-    text: "You look really beautiful here. I can see the effort you put in, and it honestly makes you stand out even more.",
-    title: "🌷 You, In Every Way I See You"
-  },
-  {
-    img: "her2.jpg",
-    text: "There’s something about you when you dress up like this — it’s not just how you look, it’s the confidence you carry too.",
-    title: "🌷 You, In Every Way I See You"
-  },
-  {
-    img: "her3.jpg",
-    text: "But what I admire the most is that even without all of that, you’re still just as beautiful to me.",
-    title: "🌷 You, In Every Way I See You"
-  }
-
+  { img: "her1.jpg", text: "You look really beautiful here. I can see the effort you put in.", title: "🌷 You, As I See You" },
+  { img: "her2.jpg", text: "It’s not just how you look — it’s the confidence you carry.", title: "🌷 You, As I See You" },
+  { img: "her3.jpg", text: "Even without all that, you’re still just as beautiful to me.", title: "🌷 You, As I See You" }
 ];
 
 let index = 0;
@@ -176,16 +169,13 @@ function updateSlide() {
   index = (index + 1) % slides.length;
 }
 
-// AUTO PLAY
-setInterval(updateSlide, 3000);
-
 // INITIAL LOAD
 updateSlide();
 
-// MUSIC
-function startMusic() {
-  document.getElementById("bgmusic").play();
-}
+// ⏱️ 7 SECOND INTERVAL (INCLUDING FIRST SLIDE)
+setTimeout(() => {
+  setInterval(updateSlide, 7000);
+}, 7000);
 
 </script>
 
